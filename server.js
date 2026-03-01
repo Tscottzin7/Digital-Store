@@ -31,7 +31,7 @@ const products = {
     description: 'Aprenda tudo sobre desenvolvimento web moderno com React, Node.js e muito mais',
     price: 49.90,
     image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&h=500&fit=crop',
-    downloadUrl: 'https://example.com/downloads/ebook-web.pdf'
+    downloadUrl: 'https://drive.google.com/file/d/1YhehThSTnmKNBxW-NZ-pgfKvrbbBMFpN/view?usp=sharing'
   }
 };
 
@@ -155,7 +155,7 @@ async function sendProductEmail(email, product, orderId) {
           </div>
 
           <p>Seu produto está disponível para download no link abaixo:</p>
-          <a href="${product.downloadUrl}" style="display: inline-block; background: #0066ff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0;">
+          <a href="${product.downloadUrl}" target="_blank" style="display: inline-block; background: #0066ff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0;">
             Baixar Produto
           </a>
 
