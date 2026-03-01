@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files
-const publicPath = path.join(__dirname, 'public');
+const publicPath = __dirname;
 app.use(express.static(publicPath));
 
 // Email transporter configuration
