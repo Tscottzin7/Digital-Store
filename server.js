@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files
-const publicPath = __dirname;
+const publicPath = path.join(__dirname, 'public');
 app.use(express.static(publicPath));
 
 // Email transporter configuration
@@ -31,7 +31,7 @@ const products = {
     description: 'Aprenda tudo sobre desenvolvimento web moderno com React, Node.js e muito mais',
     price: 49.90,
     image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&h=500&fit=crop',
-    downloadUrl: 'https://drive.google.com/file/d/1YhehThSTnmKNBxW-NZ-pgfKvrbbBMFpN/view?usp=sharing'
+    downloadUrl: 'https://example.com/downloads/ebook-web.pdf'
   }
 };
 
@@ -67,28 +67,19 @@ app.post('/api/payment/create', (req, res) => {
     return res.status(404).json({ error: 'Produto não encontrado' });
   }
 
+  // Generate order ID
   const orderId = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
+  // Store order
   orders.set(orderId, {
     id: orderId,
     email,
     productId,
     paymentMethod,
     amount: product.price,
-    status: 'completed', // já marca como concluído
-    createdAt: new Date(),
-    completedAt: new Date()
+    status: 'pending',
+    createdAt: new Date()
   });
-
-  // Envia o produto direto pro e-mail
-  sendProductEmail(email, product, orderId);
-
-  res.json({
-    success: true,
-    message: 'Pedido criado e produto enviado por e-mail!',
-    orderId
-  });
-});
 
   // Generate payment details based on method
   let paymentDetails = {};
@@ -164,7 +155,7 @@ async function sendProductEmail(email, product, orderId) {
           </div>
 
           <p>Seu produto está disponível para download no link abaixo:</p>
-          <a href="${product.downloadUrl}" target="_blank" style="display: inline-block; background: #0066ff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0;">
+          <a href="${product.downloadUrl}" style="display: inline-block; background: #0066ff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0;">
             Baixar Produto
           </a>
 
