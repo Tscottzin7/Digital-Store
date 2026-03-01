@@ -67,19 +67,28 @@ app.post('/api/payment/create', (req, res) => {
     return res.status(404).json({ error: 'Produto não encontrado' });
   }
 
-  // Generate order ID
   const orderId = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-  // Store order
   orders.set(orderId, {
     id: orderId,
     email,
     productId,
     paymentMethod,
     amount: product.price,
-    status: 'pending',
-    createdAt: new Date()
+    status: 'completed', // já marca como concluído
+    createdAt: new Date(),
+    completedAt: new Date()
   });
+
+  // Envia o produto direto pro e-mail
+  sendProductEmail(email, product, orderId);
+
+  res.json({
+    success: true,
+    message: 'Pedido criado e produto enviado por e-mail!',
+    orderId
+  });
+});
 
   // Generate payment details based on method
   let paymentDetails = {};
