@@ -1,0 +1,19 @@
+PORT=3000
+NODE_ENV=development
+
+# Email Configuration
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=seu_email@gmail.com
+SMTP_PASS=sua_senha_app
+
+# Payment Configuration
+STRIPE_PUBLIC_KEY=pk_test_seu_chave_publica
+STRIPE_SECRET_KEY=sk_test_sua_chave_secreta
+
+# PIX Configuration
+PIX_KEY=sua_chave_pix
+
+# App Configuration
+APP_NAME=Digital Store
+APP_URL=http://localhost:3000

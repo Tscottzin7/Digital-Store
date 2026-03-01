@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Store - Loja Online</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0066ff;
+            --primary-dark: #0052cc;
+            --primary-light: #3385ff;
+            --secondary: #00d4ff;
+            --background: #0a0e27;
+            --surface: #1a1f3a;
+            --surface-light: #252d4a;
+            --text: #ffffff;
+            --text-secondary: #a0aec0;
+            --success: #00d084;
+            --error: #ff4757;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--background) 0%, #0f1535 100%);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Animated background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.1;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .blob-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            top: -50px;
+            left: -50px;
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            width: 250px;
+            height: 250px;
+            background: var(--secondary);
+            bottom: 100px;
+            right: 50px;
+            animation-delay: 2s;
+        }
+
+        .blob-3 {
+            width: 200px;
+            height: 200px;
+            background: var(--primary);
+            bottom: 50px;
+            left: 50%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+            33% {
+                transform: translate(30px, -50px);
+            }
+            66% {
+                transform: translate(-20px, 20px);
+            }
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(0, 102, 255, 0.1);
+            backdrop-filter: blur(10px);
+            background: rgba(10, 14, 39, 0.8);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Main content */
+        main {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+        }
+
+        .product-showcase {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Product image */
+        .product-image {
+            position: relative;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 102, 255, 0.2);
+            animation: scaleIn 0.8s ease;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .image-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: bold;
+            animation: slideIn 0.8s ease 0.2s both;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Product info */
+        .product-info {
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .product-title {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .product-title .highlight {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .product-description {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .product-price {
+            font-size: 56px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .price-info {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 40px;
+        }
+
+        /* Payment methods */
+        .payment-methods {
+            margin-bottom: 40px;
+        }
+
+        .payment-methods h3 {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .payment-options {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .payment-btn {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid rgba(0, 102, 255, 0.3);
+            background: transparent;
+            color: var(--text);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payment-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .payment-btn:hover::before {
+            left: 0;
+        }
+
+        .payment-btn.active {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            box-shadow: 0 0 20px rgba(0, 102, 255, 0.4);
+        }
+
+        /* Email input */
+        .email-section {
+            margin-bottom: 30px;
+        }
+
+        .email-section label {
+            display: block;
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .email-input {
+            width: 100%;
+            padding: 15px 20px;
+            background: var(--surface);
+            border: 2px solid rgba(0, 102, 255, 0.2);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .email-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(0, 102, 255, 0.2);
+            background: var(--surface-light);
+        }
+
+        .email-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        /* Buy button */
+        .buy-btn {
+            width: 100%;
+            padding: 18px 30px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 102, 255, 0.3);
+        }
+
+        .buy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 102, 255, 0.4);
+        }
+
+        .buy-btn:active {
+            transform: translateY(0);
+        }
+
+        .buy-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background: var(--surface);
+            border: 2px solid rgba(0, 102, 255, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            animation: slideUp 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0, 102, 255, 0.2);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-header .icon {
+            font-size: 28px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 28px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: var(--text);
+        }
+
+        .modal-content.pix-modal {
+            position: relative;
+        }
+
+        .qr-code {
+            width: 300px;
+            height: 300px;
+            background: white;
+            border-radius: 12px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .pix-key {
+            background: var(--surface-light);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            word-break: break-all;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .copy-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .card-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            padding: 12px;
+            background: var(--surface-light);
+            border: 2px solid rgba(0, 102, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(0, 102, 255, 0.2);
+        }
+
+        .success-message {
+            background: var(--surface-light);
+            border-left: 4px solid var(--success);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .success-message .icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0, 102, 255, 0.3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .product-showcase {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .product-image {
+                height: 300px;
+            }
+
+            .product-title {
+                font-size: 32px;
+            }
+
+            .product-price {
+                font-size: 36px;
+            }
+
+            .payment-options {
+                flex-direction: column;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background -->
+    <div class="animated-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">💎 Digital Store</div>
+                <nav class="nav-links">
+                    <a href="#home">Home</a>
+                    <a href="#products">Produtos</a>
+                    <a href="#contact">Contato</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main>
+        <div class="container">
+            <div class="product-showcase">
+                <!-- Product image -->
+                <div class="product-image">
+                    <img id="productImage" src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&h=500&fit=crop" alt="Produto">
+                    <div class="image-badge">🎁 Entrega Imediata</div>
+                </div>
+
+                <!-- Product info -->
+                <div class="product-info">
+                    <h1 class="product-title">
+                        E-book: Guia Completo de <span class="highlight">Desenvolvimento Web</span>
+                    </h1>
+                    <p class="product-description">
+                        Aprenda tudo sobre desenvolvimento web moderno com React, Node.js, TypeScript e muito mais. Um guia completo com exemplos práticos, projetos reais e dicas de especialistas.
+                    </p>
+
+                    <div class="product-price">R$ 49,90</div>
+                    <div class="price-info">✓ Acesso imediato após pagamento</div>
+
+                    <!-- Payment methods -->
+                    <div class="payment-methods">
+                        <h3>Escolha a forma de pagamento</h3>
+                        <div class="payment-options">
+                            <button class="payment-btn active" data-method="pix">
+                                💳 PIX
+                            </button>
+                            <button class="payment-btn" data-method="card">
+                                💰 Cartão
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Email input -->
+                    <div class="email-section">
+                        <label for="email">Seu Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            class="email-input" 
+                            placeholder="seu@email.com"
+                            required
+                        >
+                    </div>
+
+                    <!-- Buy button -->
+                    <button class="buy-btn" id="buyBtn">
+                        Comprar Agora
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- PIX Payment Modal -->
+    <div class="modal" id="pixModal">
+        <div class="modal-content pix-modal">
+            <button class="close-btn" onclick="closeModal('pixModal')">&times;</button>
+            <div class="modal-header">
+                <span class="icon">💳</span>
+                <span>Pagamento via PIX</span>
+            </div>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                Escaneie o código QR abaixo ou copie a chave PIX para realizar o pagamento.
+            </p>
+            <div class="qr-code" id="qrCode">
+                Gerando código QR...
+            </div>
+            <div class="pix-key" id="pixKey">
+                Chave PIX será exibida aqui
+            </div>
+            <button class="copy-btn" onclick="copyPixKey()">
+                📋 Copiar Chave PIX
+            </button>
+            <p style="color: var(--text-secondary); font-size: 12px; margin-top: 20px; text-align: center;">
+                Após realizar o pagamento, você receberá o produto no seu email.
+            </p>
+        </div>
+    </div>
+
+    <!-- Card Payment Modal -->
+    <div class="modal" id="cardModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('cardModal')">&times;</button>
+            <div class="modal-header">
+                <span class="icon">💰</span>
+                <span>Pagamento com Cartão</span>
+            </div>
+            <form class="card-form" id="cardForm">
+                <div class="form-group full">
+                    <label>Nome Completo</label>
+                    <input type="text" placeholder="João Silva" required>
+                </div>
+                <div class="form-group full">
+                    <label>Número do Cartão</label>
+                    <input type="text" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Validade</label>
+                        <input type="text" placeholder="MM/AA" maxlength="5" required>
+                    </div>
+                    <div class="form-group">
+                        <label>CVV</label>
+                        <input type="text" placeholder="123" maxlength="3" required>
+                    </div>
+                </div>
+                <button type="submit" class="buy-btn" style="margin-top: 20px;">
+                    Confirmar Pagamento
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let selectedPaymentMethod = 'pix';
+        let currentOrderId = null;
+        let currentEmail = null;
+
+        // Payment method selection
+        document.querySelectorAll('.payment-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.payment-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedPaymentMethod = this.dataset.method;
+            });
+        });
+
+        // Buy button
+        document.getElementById('buyBtn').addEventListener('click', function() {
+            const email = document.getElementById('email').value;
+
+            if (!email) {
+                alert('Por favor, insira seu email');
+                return;
+            }
+
+            if (!validateEmail(email)) {
+                alert('Por favor, insira um email válido');
+                return;
+            }
+
+            currentEmail = email;
+            this.disabled = true;
+            this.innerHTML = '<span class="loading"></span> Processando...';
+
+            // Simulate payment processing
+            setTimeout(() => {
+                if (selectedPaymentMethod === 'pix') {
+                    openModal('pixModal');
+                    generatePixPayment();
+                } else {
+                    openModal('cardModal');
+                }
+                this.disabled = false;
+                this.innerHTML = 'Comprar Agora';
+            }, 500);
+        });
+
+        // Card form submission
+        document.getElementById('cardForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            processCardPayment();
+        });
+
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        function generatePixPayment() {
+            // Generate mock PIX QR code
+            const orderId = 'ORD-' + Date.now();
+            currentOrderId = orderId;
+            
+            const qrCode = document.getElementById('qrCode');
+            qrCode.innerHTML = `
+                <div style="text-align: center;">
+                    <div style="font-size: 48px; margin-bottom: 10px;">📱</div>
+                    <div style="font-size: 12px; color: #666;">
+                        QR Code PIX<br>
+                        ${orderId}
+                    </div>
+                </div>
+            `;
+
+            const pixKey = '00020126580014br.gov.bcb.pix0136' + orderId + '5204000053039865802BR5913DIGITAL STORE6009SAO PAULO62410503***63041D3D';
+            document.getElementById('pixKey').textContent = pixKey;
+        }
+
+        function copyPixKey() {
+            const pixKey = document.getElementById('pixKey').textContent;
+            navigator.clipboard.writeText(pixKey).then(() => {
+                alert('Chave PIX copiada!');
+            });
+        }
+
+        function processCardPayment() {
+            const btn = document.querySelector('#cardForm button[type="submit"]');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span> Processando...';
+
+            // Simulate payment processing
+            setTimeout(() => {
+                showSuccessMessage();
+                btn.disabled = false;
+                btn.innerHTML = 'Confirmar Pagamento';
+            }, 2000);
+        }
+
+        function showSuccessMessage() {
+            closeModal('cardModal');
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal active';
+            modal.id = 'successModal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <button class="close-btn" onclick="closeModal('successModal')">&times;</button>
+                    <div class="success-message">
+                        <div class="icon">✅</div>
+                        <h2 style="margin-bottom: 10px;">Pagamento Aprovado!</h2>
+                        <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                            Seu pedido foi processado com sucesso.
+                        </p>
+                        <div style="background: var(--surface-light); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                            <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 5px;">Pedido #</p>
+                            <p style="font-weight: bold; color: var(--primary);">${currentOrderId}</p>
+                        </div>
+                        <p style="color: var(--text-secondary); font-size: 14px;">
+                            ✉️ Verifique seu email <strong>${currentEmail}</strong> para receber o produto.
+                        </p>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Close modal on background click
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+
+        // Format card number input
+        document.addEventListener('input', function(e) {
+            if (e.target.placeholder === '1234 5678 9012 3456') {
+                let value = e.target.value.replace(/\s/g, '');
+                let formatted = value.match(/.{1,4}/g)?.join(' ') || value;
+                e.target.value = formatted;
+            }
+        });
+    </script>
+</body>
+</html>
